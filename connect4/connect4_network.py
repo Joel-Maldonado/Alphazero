@@ -5,7 +5,7 @@ import torch.optim as optim
 import numpy as np
 import time
 import os
-from tqdm.auto import tqdm
+from tqdm import tqdm
 
 args = {
     'lr': 0.001,
