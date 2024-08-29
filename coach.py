@@ -5,7 +5,7 @@ from pickle import Pickler, Unpickler
 from random import shuffle
 
 import numpy as np
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 from arena import Arena
 from mcts import MCTS
