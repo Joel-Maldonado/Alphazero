@@ -22,10 +22,10 @@ args = {
 
 
 def main():
-    print('Loading %s...', Game.__name__)
+    print(f'Loading {Game.__name__}...')
     g = Game
 
-    print('Loading %s...', nn.__name__)
+    print(f'Loading {nn.__name__}...')
     nnet = nn(g)
 
     if args['load_model']:
