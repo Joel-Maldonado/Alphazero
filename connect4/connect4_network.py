@@ -24,10 +24,15 @@ class NNetWrapper:
         self.action_size = game.get_action_size()
 
         if args['cuda']:
+            print('Using CUDA')
             self.nnet.cuda()
         
         elif args['mps']:
+            print('Using MPS')
             self.nnet = self.nnet.to('mps')
+        
+        else:
+            print('Using CPU')
 
     def train(self, examples):
         """

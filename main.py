@@ -15,7 +15,7 @@ args = {
     'cpuct': 1,
 
     'checkpoint': './checkpoints/connect4/',
-    'load_model': True,
+    'load_model': False,
     'load_folder_file': ('./checkpoints/connect4','best.pth.tar'),
     'num_iters_for_train_examples_history': 20
 }
