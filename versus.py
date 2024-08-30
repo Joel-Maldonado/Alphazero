@@ -14,7 +14,7 @@ args = {
 def main():
     game = Game
     nnet = nn(game)
-    nnet.load_checkpoint('./checkpoints/connect4', 'connect4.5200.pth.tar')
+    nnet.load_checkpoint('./checkpoints/connect4', 'best.pth.tar')
     mcts = MCTS(game, nnet, args)
 
     # Play against bot

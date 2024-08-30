@@ -13,7 +13,8 @@ args = {
     'epochs': 10,
     'batch_size': 64,
     'cuda': torch.cuda.is_available(),
-    'mps': torch.backends.mps.is_available(),
+    # 'mps': torch.backends.mps.is_available(),
+    'mps': False,
     'num_channels': 512,
 }
 
@@ -115,12 +116,13 @@ class NNetWrapper:
             'state_dict': self.nnet.state_dict(),
         }, filepath)
 
-    def load_checkpoint(self, folder='checkpoint', filename='checkpoint.pth.tar'):
+    def load_checkpoint(self, folder='checkpoint', filename='checkpoint.pth.tar', map_location='.'):
         # https://github.com/pytorch/examples/blob/master/imagenet/main.py#L98
         filepath = os.path.join(folder, filename)
         if not os.path.exists(filepath):
             raise ("No model in path {}".format(filepath))
-        map_location = None if args['cuda'] else 'cpu'
+        if map_location == '.':
+            map_location = None if args['cuda'] else 'cpu'
         checkpoint = torch.load(filepath, map_location=map_location)
         self.nnet.load_state_dict(checkpoint['state_dict'])
 
