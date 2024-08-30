@@ -7,14 +7,14 @@ from connect4.connect4_network import NNetWrapper as nn
 from main import args
 
 args = {
-    'num_mcts_sims': 25,          # Number of games moves for MCTS to simulate.
+    'num_mcts_sims': 200,          # Number of games moves for MCTS to simulate.
     'cpuct': 1,
 }
 
 def main():
     game = Game
     nnet = nn(game)
-    nnet.load_checkpoint('./checkpoints/connect4', 'best.pth.tar')
+    nnet.load_checkpoint('./checkpoints/connect4', 'connect4.5200.pth.tar')
     mcts = MCTS(game, nnet, args)
 
     # Play against bot
@@ -39,7 +39,7 @@ def main():
                     continue
         else:
             print('Bot\'s Turn')
-            probs = mcts.get_action_prob(state, temp=0)
+            probs = mcts.get_action_prob(game.get_cannonical_state(state, curPlayer), temp=0)
             valids = game.get_valid_actions(game.get_cannonical_state(state, curPlayer))
             action = np.argmax(probs * valids)
             if action == game.get_action_size():
@@ -52,7 +52,7 @@ def main():
     Game.visualize_state(state)
 
 
-    outcome = game.get_game_outcome(state, curPlayer)
+    outcome = game.get_game_outcome(state, 1)
     if outcome == 1:
         print('Player wins!')
     elif outcome == -1:

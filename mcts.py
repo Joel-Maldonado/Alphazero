@@ -1,20 +1,22 @@
 import numpy as np
 import math
+from numba import njit, float64, int8
 
 EPS = 1e-8
+NAN = np.array([np.nan])
 
 class MCTS():
     def __init__(self, game, nnet, args):
         self.game = game
         self.nnet = nnet
         self.args = args
-        self.Qsa = {}  # stores Q values for s,a (as defined in the paper)
-        self.Nsa = {}  # stores #times edge s,a was visited
-        self.Ns = {}  # stores #times state s was visited
-        self.Ps = {}  # stores initial policy (returned by neural net)
+        self.Qsa = dict()  # stores Q values for s,a (as defined in the paper)
+        self.Nsa = dict()  # stores #times edge s,a was visited
+        self.Ns = dict()  # stores #times state s was visited
+        self.Ps = dict()  # stores initial policy (returned by neural net)
 
-        self.s_outcomes = {}  # stores game.get_game_outcome for state s
-        self.s_valid_actions = {}  # stores game.get_valid_actions for state s
+        self.s_outcomes = dict()  # stores game.get_game_outcome for state s
+        self.s_valid_actions = dict()  # stores game.get_valid_actions for state s
 
     def get_action_prob(self, canonicalBoard, temp=1):
         for _ in range(self.args['num_mcts_sims']):
@@ -50,6 +52,7 @@ class MCTS():
             self.Ps[s], v = self.nnet.predict(cannonical_state)
             valid_actions = self.game.get_valid_actions(cannonical_state)
             self.Ps[s] = self.Ps[s] * valid_actions
+
             sum_of_Ps = np.sum(self.Ps[s])
             if sum_of_Ps > 0:
                 self.Ps[s] /= sum_of_Ps
@@ -78,6 +81,7 @@ class MCTS():
                     cur_best = u
                     best_act = a
 
+        # print(best_act)
         a = best_act
         next_state, next_player = self.game.get_next_state(cannonical_state, a, 1)
         next_state = self.game.get_cannonical_state(next_state, next_player)
@@ -89,7 +93,8 @@ class MCTS():
             self.Nsa[(s, a)] += 1
 
         else:
-            self.Qsa[(s, a)] = v
+            # self.Qsa[(s, a)] = np.array([v]) if type(v) == int or type(v) == float else v
+            self.Qsa[(s, a)] = v #np.array([v]) if type(v) == int or type(v) == float else v
             self.Nsa[(s, a)] = 1
 
         self.Ns[s] += 1

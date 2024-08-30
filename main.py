@@ -6,7 +6,7 @@ from connect4.connect4_network import NNetWrapper as nn
 
 args = {
     'num_iters': 1000,
-    'num_eps': 200,              # Number of complete self-play games to simulate during a new iteration.
+    'num_eps': 10,              # Number of complete self-play games to simulate during a new iteration.
     'temp_threshold': 15,        #
     'update_threshold': 0.55,     # During arena playoff, new neural net will be accepted if threshold or more of games are won.
     'max_len_of_queue': 200000,    # Number of game examples to train the neural networks.
